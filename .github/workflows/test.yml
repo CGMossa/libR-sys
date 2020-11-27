@@ -59,7 +59,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: mingw64 {0}
+        shell: msys2 {0}
     strategy:
       matrix:
         rust-version: [stable-gnu]
