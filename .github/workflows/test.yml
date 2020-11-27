@@ -84,6 +84,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust-version }}
           target: x86_64-pc-windows-gnu
+          default: true
       - name: Build
         run: |
           ls "C:/msys64/mingw64/x86_64-w64-mingw32/include"
