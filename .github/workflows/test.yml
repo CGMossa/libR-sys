@@ -65,13 +65,6 @@ jobs:
         rust-version: [stable-gnu]
     steps:
       - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: 'release'
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust-version }}
-          target: x86_64-pc-windows-gnu
       - uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
@@ -84,7 +77,13 @@ jobs:
             mingw-w64-x86_64-make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-pkg-config
-            msys2-w32api-runtime
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: 'release'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          target: x86_64-pc-windows-gnu
       - name: Build
         run: |
           echo "C:/msys64/usr/bin" >> $GITHUB_PATH
