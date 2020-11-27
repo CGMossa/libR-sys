@@ -81,13 +81,10 @@ jobs:
           install: >-
             mingw-w64-x86_64-clang
             mingw-w64-x86_64-toolchain
-      - name: Is Cargo part of the path?
-        run: echo $GITHUB_PATH
       - name: Build
         run: |
           echo "C:/msys64/usr/bin" >> $GITHUB_PATH
           echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
-          # echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
           cargo build --verbose
         env:
           LIBCLANG_PATH: C:/msys64/mingw64/bin
@@ -95,7 +92,6 @@ jobs:
         run: |
           echo "C:/msys64/usr/bin" >> $GITHUB_PATH
           echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
-          # echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
           cargo test --verbose -- --nocapture --test-threads=1
         env:
           LIBCLANG_PATH: C:/msys64/mingw64/bin
