@@ -81,32 +81,21 @@ jobs:
           install: >-
             mingw-w64-x86_64-clang
             mingw-w64-x86_64-toolchain
-      - name: Add necessary paths
-        run: |
-          echo "C:/msys64/usr/bin" >> $GITHUB_PATH
-          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
-          echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
-      - name: What Clang is being used?
-        run: clang -v
-      - name: diagnose location of things
-        run: |
-          ls "C:/msys64/mingw64/bin"
-          ls "C:/msys64"
-          ls "C:/msys64/mingw64/bin" 
-          ls "C:/msys64/usr/bin"
-      - name: Which Cargo?
-        run: where cargo
-      - name: llvm-config stuff
-        run: |
-          llvm-config --libdir
-          llvm-config --includedir
       - name: Is Cargo part of the path?
         run: echo $GITHUB_PATH
       - name: Build
-        run: cargo build --verbose
+        run: |
+          echo "C:/msys64/usr/bin" >> $GITHUB_PATH
+          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+          # echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
+          cargo build --verbose
         env:
           LIBCLANG_PATH: C:/msys64/mingw64/bin
       - name: Run tests
-        run: cargo test --verbose -- --nocapture --test-threads=1
+        run: |
+          echo "C:/msys64/usr/bin" >> $GITHUB_PATH
+          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+          # echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
+          cargo test --verbose -- --nocapture --test-threads=1
         env:
           LIBCLANG_PATH: C:/msys64/mingw64/bin
