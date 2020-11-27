@@ -90,7 +90,7 @@ fn main() {
         // println!("TARGET: {}",cargo_env("TARGET"));
     // Point to the correct headers
     let bindgen_builder = bindgen_builder.clang_args(&[
-        "-c".to_string(),
+        // "-c".to_string(),
         format!("-I{}", &details.include),
         format!("--target={}", std::env::var("TARGET").expect("Could not get the target triple"))
     ]);
