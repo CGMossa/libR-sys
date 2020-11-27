@@ -87,7 +87,7 @@ fn main() {
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks));
 
-        // println!("TARGET: {}",cargo_env("TARGET"));
+        println!("TARGET: {}", std::env::var("TARGET").unwrap());
     // Point to the correct headers
     let bindgen_builder = bindgen_builder.clang_args(&[
         // "-c".to_string(),
