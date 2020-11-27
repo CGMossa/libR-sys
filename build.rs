@@ -18,7 +18,7 @@ fn probe_r_paths() -> io::Result<InstallationPaths> {
                 r#"cat(R.home(), R.home('include'), R.home('bin'), sep = '\n')"#
             } else {
                 r#"cat(R.home(), R.home('include'), R.home('lib'), sep = '\n')"#
-            }
+            },
         ])
         .output()?;
 
@@ -63,7 +63,7 @@ fn main() {
 
     println!("cargo:rustc-env=R_HOME={}", &details.r_home);
     println!("cargo:r_home={}", &details.r_home); // Becomes DEP_R_R_HOME for clients
-    // make sure cargo links properly against library
+                                                  // make sure cargo links properly against library
     println!("cargo:rustc-link-search={}", &details.library);
     println!("cargo:rustc-link-lib=dylib=R");
 
@@ -87,12 +87,13 @@ fn main() {
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks));
 
-        println!("TARGET: {}", std::env::var("TARGET").unwrap());
     // Point to the correct headers
     let bindgen_builder = bindgen_builder.clang_args(&[
-        // "-c".to_string(),
         format!("-I{}", &details.include),
-        format!("--target={}", std::env::var("TARGET").expect("Could not get the target triple"))
+        format!(
+            "--target={}",
+            std::env::var("TARGET").expect("Could not get the target triple")
+        ),
     ]);
 
     // Finish the builder and generate the bindings.
@@ -125,6 +126,5 @@ fn main() {
         bindings
             .write_to_file(out_path.join("bindings.rs"))
             .expect("Couldn't write bindings to output path specified by $LIBRSYS_BINDINGS_DIR!");
-
     }
 }
