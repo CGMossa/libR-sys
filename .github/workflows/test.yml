@@ -59,7 +59,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: msys2 {0}
+        shell: mingw64 {0}
     strategy:
       matrix:
         rust-version: [stable-gnu]
@@ -79,8 +79,11 @@ jobs:
           release: true
           update: true
           install: >-
-            mingw-w64-x86_64-clang
-            mingw-w64-x86_64-toolchain
+            mingw-w64-clang
+            # mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-pkg-config
             msys2-w32api-runtime
       - name: Build
         run: |
