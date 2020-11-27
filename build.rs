@@ -93,7 +93,7 @@ fn main() {
         "-c".to_string(),
         format!("-I{}", &details.include),
         format!("--target={}", std::env::var("TARGET").expect("Could not get the target triple"))
-    ]).detect_include_paths(true);
+    ]);
 
     // Finish the builder and generate the bindings.
     let bindings = bindgen_builder
