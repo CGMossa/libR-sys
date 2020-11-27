@@ -81,6 +81,7 @@ jobs:
           install: >-
             mingw-w64-x86_64-clang
             mingw-w64-x86_64-toolchain
+            msys2-w32api-runtime
       - name: Build
         run: |
           echo "C:/msys64/usr/bin" >> $GITHUB_PATH
