@@ -1,0 +1,112 @@
+name: Tests
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # test_linux:
+  #   name: Run tests (Linux)
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: ${{ matrix.allow-failure }}
+  #   strategy:
+  #     matrix:
+  #       rust-version: [stable, beta]
+  #       allow-failure: [false]
+  #       include:
+  #         - rust-version: nightly
+  #           allow-failure: true
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: ${{ matrix.rust-version }}
+  #     - name: Install dependencies
+  #       run: sudo apt-get install r-base-dev llvm-3.9-dev libclang-3.9-dev
+  #     - name: Build
+  #       run: cargo build
+  #       env:
+  #         LIBCLANG_PATH: /usr/lib/llvm-3.9/lib
+  #     - name: Run tests
+  #       run: cargo test -- --nocapture --test-threads=1
+  #       env:
+  #         LIBCLANG_PATH: /usr/lib/llvm-3.9/lib
+
+  # # test_macos:
+  #   name: Run tests (macOS)
+  #   runs-on: macos-latest
+  #   strategy:
+  #     matrix:
+  #       rust-version: [stable]
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: ${{ matrix.rust-version }}
+  #     - name: Install dependencies
+  #       run: brew install llvm r
+  #     - name: Set dynamic environment variables
+  #       run: echo "LIBCLANG_PATH=$(brew --prefix llvm)/lib" >> $GITHUB_ENV
+  #     - name: Build
+  #       run: cargo build
+  #     - name: Run tests
+  #       run: cargo test -- --nocapture --test-threads=1
+
+  test_windows:
+    name: Run tests (Windows)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    strategy:
+      matrix:
+        rust-version: [stable-gnu]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: 'release'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          target: x86_64-pc-windows-gnu
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MSYS
+          path-type: inherit
+          release: true
+          update: true
+          install: >-
+            mingw-w64-x86_64-clang
+            mingw-w64-x86_64-toolchain
+      - name: Add necessary paths
+        run: |
+          echo "C:/msys64/usr/bin" >> $GITHUB_PATH
+          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+          echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
+      - name: What Clang is being used?
+        run: clang -v
+      - name: diagnose location of things
+        run: |
+          ls "C:/msys64/mingw64/bin"
+          ls "C:/msys64"
+          ls "C:/msys64/mingw64/bin" 
+          ls "C:/msys64/usr/bin"
+      - name: Which Cargo?
+        run: where cargo
+      - name: llvm-config stuff
+        run: |
+          llvm-config --libdir
+          llvm-config --includedir
+      - name: Is Cargo part of the path?
+        run: echo $GITHUB_PATH
+      - name: Build
+        run: cargo build --verbose
+        env:
+          LIBCLANG_PATH: C:/msys64/mingw64/bin
+      - name: Run tests
+        run: cargo test --verbose -- --nocapture --test-threads=1
+        env:
+          LIBCLANG_PATH: C:/msys64/mingw64/bin
