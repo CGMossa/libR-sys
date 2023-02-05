@@ -3,7 +3,7 @@
 /* libR-sys version: 0.6.0 */
 /* bindgen clang version: Homebrew clang version 17.0.6 */
 /* clang-rs version: Homebrew clang version 17.0.6 */
-/* r version: 4.2.3 */
+/* r version: 4.3.2 */
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -94,6 +94,7 @@ pub const SUPPORT_UTF8: u32 = 1;
 pub const SUPPORT_MBCS: u32 = 1;
 pub const ENABLE_NLS: u32 = 1;
 pub const HAVE_AQUA: u32 = 1;
+pub const PR18534fixed: u32 = 1;
 pub const SIZEOF_SIZE_T: u32 = 8;
 pub const HAVE_ALLOCA_H: u32 = 1;
 pub const HAVE_UINTPTR_T: u32 = 1;
@@ -143,7 +144,7 @@ pub const HT_TYPE_IDENTICAL: u32 = 0;
 pub const HT_TYPE_ADDRESS: u32 = 1;
 pub const RSTART_VERSION: u32 = 1;
 pub const __STDC_WANT_IEC_60559_FUNCS_EXT__: u32 = 1;
-pub const R_VERSION_STRING: &[u8; 6] = b"4.2.3\0";
+pub const R_VERSION_STRING: &[u8; 6] = b"4.3.2\0";
 pub const HAVE_EXPM1: u32 = 1;
 pub const HAVE_HYPOT: u32 = 1;
 pub const HAVE_LOG1P: u32 = 1;
@@ -157,19 +158,20 @@ pub const M_LN_2PI: f64 = 1.8378770664093456;
 pub const M_LN_SQRT_PI: f64 = 0.5723649429247001;
 pub const M_LN_SQRT_2PI: f64 = 0.9189385332046728;
 pub const M_LN_SQRT_PId2: f64 = 0.22579135264472744;
-pub const R_VERSION: u32 = 262659;
-pub const R_NICK: &[u8; 17] = b"Shortstop Beagle\0";
+pub const R_VERSION: u32 = 262914;
+pub const R_NICK: &[u8; 10] = b"Eye Holes\0";
 pub const R_MAJOR: &[u8; 2] = b"4\0";
-pub const R_MINOR: &[u8; 4] = b"2.3\0";
+pub const R_MINOR: &[u8; 4] = b"3.2\0";
 pub const R_STATUS: &[u8; 1] = b"\0";
 pub const R_YEAR: &[u8; 5] = b"2023\0";
-pub const R_MONTH: &[u8; 3] = b"03\0";
-pub const R_DAY: &[u8; 3] = b"15\0";
-pub const R_SVN_REVISION: u32 = 83980;
+pub const R_MONTH: &[u8; 3] = b"10\0";
+pub const R_DAY: &[u8; 3] = b"31\0";
+pub const R_SVN_REVISION: u32 = 85441;
 pub const R_GE_definitions: u32 = 13;
 pub const R_GE_deviceClip: u32 = 14;
 pub const R_GE_group: u32 = 15;
-pub const R_GE_version: u32 = 15;
+pub const R_GE_glyphs: u32 = 16;
+pub const R_GE_version: u32 = 16;
 pub const MAX_GRAPHICS_SYSTEMS: u32 = 24;
 pub const R_USE_PROTOTYPES: u32 = 1;
 pub const leftButton: u32 = 1;
@@ -231,6 +233,10 @@ pub const R_GE_capability_masks: u32 = 8;
 pub const R_GE_capability_compositing: u32 = 9;
 pub const R_GE_capability_transformations: u32 = 10;
 pub const R_GE_capability_paths: u32 = 11;
+pub const R_GE_capability_glyphs: u32 = 12;
+pub const R_GE_text_style_normal: u32 = 1;
+pub const R_GE_text_style_italic: u32 = 2;
+pub const R_GE_text_style_oblique: u32 = 3;
 #[doc = "R_xlen_t is defined as int on 32-bit platforms, and\n that confuses Rust. Keeping it always as ptrdiff_t works\n fine even on 32-bit.\n <div rustbindgen replaces=\"R_xlen_t\"></div>"]
 pub type R_xlen_t = isize;
 pub type __int64_t = ::std::os::raw::c_longlong;
@@ -623,6 +629,10 @@ pub type R_altstring_Is_sorted_method_t =
     ::std::option::Option<unsafe extern "C" fn(arg1: SEXP) -> ::std::os::raw::c_int>;
 pub type R_altstring_No_NA_method_t =
     ::std::option::Option<unsafe extern "C" fn(arg1: SEXP) -> ::std::os::raw::c_int>;
+pub type R_altlist_Elt_method_t =
+    ::std::option::Option<unsafe extern "C" fn(arg1: SEXP, arg2: R_xlen_t) -> SEXP>;
+pub type R_altlist_Set_elt_method_t =
+    ::std::option::Option<unsafe extern "C" fn(arg1: SEXP, arg2: R_xlen_t, arg3: SEXP)>;
 #[doc = "native device coordinates (rasters)"]
 pub const GEUnit_GE_DEVICE: GEUnit = 0;
 #[doc = "normalised device coordinates x=(0,1), y=(0,1)"]
@@ -936,6 +946,19 @@ pub struct _DevDesc {
         unsafe extern "C" fn(path: SEXP, rule: ::std::os::raw::c_int, gc: pGEcontext, dd: pDevDesc),
     >,
     pub capabilities: ::std::option::Option<unsafe extern "C" fn(cap: SEXP) -> SEXP>,
+    pub glyph: ::std::option::Option<
+        unsafe extern "C" fn(
+            n: ::std::os::raw::c_int,
+            glyphs: *mut ::std::os::raw::c_int,
+            x: *mut f64,
+            y: *mut f64,
+            font: SEXP,
+            size: f64,
+            colour: ::std::os::raw::c_int,
+            rot: f64,
+            dd: pDevDesc,
+        ),
+    >,
     #[doc = "Area for future expansion.\nBy zeroing this, devices are more likely to work if loaded\ninto a later version of R than that they were compiled under."]
     pub reserved: [::std::os::raw::c_char; 64usize],
 }
@@ -989,7 +1012,7 @@ pub struct _GEDevDesc {
     pub displayListOn: Rboolean,
     #[doc = "display list"]
     pub displayList: SEXP,
-    #[doc = "A pointer to the end of the display list\nto avoid tranversing pairlists"]
+    #[doc = "A pointer to the end of the display list\nto avoid traversing pairlists"]
     pub DLlastElt: SEXP,
     #[doc = "The last element of the display list\n just prior to when the display list\n was last initialised"]
     pub savedSnapshot: SEXP,
@@ -1075,15 +1098,7 @@ pub struct Rcomplex {
     pub r: f64,
     pub i: f64,
 }
-pub type __builtin_va_list = [__va_list_tag; 1usize];
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __va_list_tag {
-    pub gp_offset: ::std::os::raw::c_uint,
-    pub fp_offset: ::std::os::raw::c_uint,
-    pub overflow_arg_area: *mut ::std::os::raw::c_void,
-    pub reg_save_area: *mut ::std::os::raw::c_void,
-}
+pub type __builtin_va_list = *mut ::std::os::raw::c_char;
 extern "C" {
     #[doc = "IEEE NaN"]
     pub static mut R_NaN: f64;
@@ -1109,7 +1124,7 @@ extern "C" {
     pub fn R_gc();
     pub fn R_gc_running() -> ::std::os::raw::c_int;
     pub fn R_alloc(arg1: usize, arg2: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
-    pub fn R_allocLD(nelem: usize) -> *mut u128;
+    pub fn R_allocLD(nelem: usize) -> *mut f64;
     pub fn S_alloc(
         arg1: ::std::os::raw::c_long,
         arg2: ::std::os::raw::c_int,
@@ -1229,8 +1244,8 @@ extern "C" {
     );
     pub fn Rprintf(arg1: *const ::std::os::raw::c_char, ...);
     pub fn REprintf(arg1: *const ::std::os::raw::c_char, ...);
-    pub fn Rvprintf(arg1: *const ::std::os::raw::c_char, arg2: *mut __va_list_tag);
-    pub fn REvprintf(arg1: *const ::std::os::raw::c_char, arg2: *mut __va_list_tag);
+    pub fn Rvprintf(arg1: *const ::std::os::raw::c_char, arg2: va_list);
+    pub fn REvprintf(arg1: *const ::std::os::raw::c_char, arg2: va_list);
     pub fn R_registerRoutines(
         info: *mut DllInfo,
         croutines: *const R_CMethodDef,
@@ -1338,6 +1353,7 @@ extern "C" {
     pub fn CADDR(e: SEXP) -> SEXP;
     pub fn CADDDR(e: SEXP) -> SEXP;
     pub fn CAD4R(e: SEXP) -> SEXP;
+    pub fn CAD5R(e: SEXP) -> SEXP;
     pub fn MISSING(x: SEXP) -> ::std::os::raw::c_int;
     pub fn SET_TAG(x: SEXP, y: SEXP);
     pub fn SETCAR(x: SEXP, y: SEXP) -> SEXP;
@@ -1586,6 +1602,7 @@ extern "C" {
         msg_name: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
     pub fn R_ParseEvalString(arg1: *const ::std::os::raw::c_char, arg2: SEXP) -> SEXP;
+    pub fn R_ParseString(arg1: *const ::std::os::raw::c_char) -> SEXP;
     pub fn Rf_PrintValue(arg1: SEXP);
     pub fn Rf_setAttrib(arg1: SEXP, arg2: SEXP, arg3: SEXP) -> SEXP;
     pub fn Rf_setVar(arg1: SEXP, arg2: SEXP, arg3: SEXP);
@@ -1618,6 +1635,12 @@ extern "C" {
         x: *const ::std::os::raw::c_char,
         ce_in: cetype_t,
         ce_out: cetype_t,
+        subst: ::std::os::raw::c_int,
+    ) -> *const ::std::os::raw::c_char;
+    pub fn Rf_reEnc3(
+        x: *const ::std::os::raw::c_char,
+        fromcode: *const ::std::os::raw::c_char,
+        tocode: *const ::std::os::raw::c_char,
         subst: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
     #[doc = "Calling a function with arguments evaluated"]
@@ -1693,7 +1716,7 @@ extern "C" {
         arg4: *mut ::std::os::raw::c_void,
     ) -> SEXP;
     pub fn R_MakeUnwindCont() -> SEXP;
-    pub fn R_ContinueUnwind(cont: SEXP) -> !;
+    pub fn R_ContinueUnwind(cont: SEXP);
     pub fn R_UnwindProtect(
         fun: ::std::option::Option<unsafe extern "C" fn(data: *mut ::std::os::raw::c_void) -> SEXP>,
         data: *mut ::std::os::raw::c_void,
@@ -1720,7 +1743,8 @@ extern "C" {
     pub fn R_BindingIsActive(sym: SEXP, env: SEXP) -> Rboolean;
     pub fn R_ActiveBindingFunction(sym: SEXP, env: SEXP) -> SEXP;
     pub fn R_HasFancyBindings(rho: SEXP) -> Rboolean;
-    pub fn Rf_errorcall(arg1: SEXP, arg2: *const ::std::os::raw::c_char, ...) -> !;
+    #[doc = "../main/errors.c : */\n/* needed for R_load/savehistory handling in front ends"]
+    pub fn Rf_errorcall(arg1: SEXP, arg2: *const ::std::os::raw::c_char, ...);
     pub fn Rf_warningcall(arg1: SEXP, arg2: *const ::std::os::raw::c_char, ...);
     pub fn Rf_warningcall_immediate(arg1: SEXP, arg2: *const ::std::os::raw::c_char, ...);
     pub fn R_XDREncodeDouble(d: f64, buf: *mut ::std::os::raw::c_void);
@@ -2140,7 +2164,7 @@ extern "C" {
         arg5: ::std::os::raw::c_int,
     ) -> f64;
     pub fn Rf_rnchisq(arg1: f64, arg2: f64) -> f64;
-    #[doc = "F Distibution"]
+    #[doc = "F Distribution"]
     pub fn Rf_df(arg1: f64, arg2: f64, arg3: f64, arg4: ::std::os::raw::c_int) -> f64;
     pub fn Rf_pf(
         arg1: f64,
@@ -2157,7 +2181,7 @@ extern "C" {
         arg5: ::std::os::raw::c_int,
     ) -> f64;
     pub fn Rf_rf(arg1: f64, arg2: f64) -> f64;
-    #[doc = "Student t Distibution"]
+    #[doc = "Student t Distribution"]
     pub fn Rf_dt(arg1: f64, arg2: f64, arg3: ::std::os::raw::c_int) -> f64;
     pub fn Rf_pt(
         arg1: f64,
@@ -2244,7 +2268,7 @@ extern "C" {
         arg4: ::std::os::raw::c_int,
     ) -> f64;
     pub fn Rf_rgeom(arg1: f64) -> f64;
-    #[doc = "Hypergeometric Distibution"]
+    #[doc = "Hypergeometric Distribution"]
     pub fn Rf_dhyper(
         arg1: f64,
         arg2: f64,
@@ -2550,6 +2574,11 @@ extern "C" {
         pname: *const ::std::os::raw::c_char,
         info: *mut DllInfo,
     ) -> R_altrep_class_t;
+    pub fn R_make_altlist_class(
+        cname: *const ::std::os::raw::c_char,
+        pname: *const ::std::os::raw::c_char,
+        info: *mut DllInfo,
+    ) -> R_altrep_class_t;
     pub fn R_altrep_inherits(x: SEXP, arg1: R_altrep_class_t) -> Rboolean;
     pub fn R_set_altrep_UnserializeEX_method(
         cls: R_altrep_class_t,
@@ -2628,6 +2657,8 @@ extern "C" {
         fun: R_altstring_Is_sorted_method_t,
     );
     pub fn R_set_altstring_No_NA_method(cls: R_altrep_class_t, fun: R_altstring_No_NA_method_t);
+    pub fn R_set_altlist_Elt_method(cls: R_altrep_class_t, fun: R_altlist_Elt_method_t);
+    pub fn R_set_altlist_Set_elt_method(cls: R_altrep_class_t, fun: R_altlist_Set_elt_method_t);
     pub fn R_GE_getVersion() -> ::std::os::raw::c_int;
     pub fn R_GE_checkVersionOrDie(version: ::std::os::raw::c_int);
     #[doc = "Properly declared version of devNumber"]
@@ -2991,6 +3022,31 @@ extern "C" {
     pub fn GEFill(path: SEXP, rule: ::std::os::raw::c_int, gc: pGEcontext, dd: pGEDevDesc);
     pub fn GEFillStroke(path: SEXP, rule: ::std::os::raw::c_int, gc: pGEcontext, dd: pGEDevDesc);
     pub fn R_GE_maskType(mask: SEXP) -> ::std::os::raw::c_int;
+    pub fn R_GE_glyphInfoGlyphs(glyphInfo: SEXP) -> SEXP;
+    pub fn R_GE_glyphInfoFonts(glyphInfo: SEXP) -> SEXP;
+    pub fn R_GE_glyphID(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphX(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphY(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphFont(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphSize(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphColour(glyphs: SEXP) -> SEXP;
+    pub fn R_GE_glyphFontFile(glyphFont: SEXP) -> *const ::std::os::raw::c_char;
+    pub fn R_GE_glyphFontIndex(glyphFont: SEXP) -> ::std::os::raw::c_int;
+    pub fn R_GE_glyphFontFamily(glyphFont: SEXP) -> *const ::std::os::raw::c_char;
+    pub fn R_GE_glyphFontWeight(glyphFont: SEXP) -> f64;
+    pub fn R_GE_glyphFontStyle(glyphFont: SEXP) -> ::std::os::raw::c_int;
+    pub fn R_GE_glyphFontPSname(glyphFont: SEXP) -> *const ::std::os::raw::c_char;
+    pub fn GEGlyph(
+        n: ::std::os::raw::c_int,
+        glyphs: *mut ::std::os::raw::c_int,
+        x: *mut f64,
+        y: *mut f64,
+        font: SEXP,
+        size: f64,
+        colour: ::std::os::raw::c_int,
+        rot: f64,
+        dd: pGEDevDesc,
+    );
     #[doc = "S Like Memory Management"]
     pub fn R_chk_calloc(arg1: usize, arg2: usize) -> *mut ::std::os::raw::c_void;
     pub fn R_chk_realloc(
