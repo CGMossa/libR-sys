@@ -491,6 +491,9 @@ fn generate_bindings(r_paths: &InstallationPaths, version_info: &RVersionInfo) {
         format!("--target={target}"),
     ]);
 
+    // Supposedly, this helps with no-return attributes.
+    bindgen_builder = bindgen_builder.enable_function_attribute_detection();
+
     // stops warning about ignored attributes,
     // e.g. ignores `__format__` attributes caused by `stdio.h`
     bindgen_builder = bindgen_builder.clang_arg("-Wno-ignored-attributes");
@@ -525,6 +528,9 @@ fn generate_bindings(r_paths: &InstallationPaths, version_info: &RVersionInfo) {
 
     // Remove all Fortran items, these are items with underscore _ postfix
     let bindgen_builder = bindgen_builder.blocklist_item("[A-Za-z_][A-Za-z0-9_]*[^_]_$");
+
+    // Map FALSE ~ 0 and TRUE ~ 0 > .
+    let bindgen_builder = bindgen_builder.blocklist_item("Rboolean");
 
     // Ensure that `SEXPREC` is opaque to Rust
     let bindgen_builder = bindgen_builder.blocklist_item("SEXPREC");

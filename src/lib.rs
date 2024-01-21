@@ -66,6 +66,32 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
+#[repr(C)]
+#[derive(Debug, PartialEq, Eq)]
+pub enum Rboolean {
+    FALSE = 0,
+    // Values from the C-API greater than 0 are interpreted as `TRUE`
+    TRUE,
+}
+
+impl From<Rboolean> for bool {
+    fn from(value: Rboolean) -> Self {
+        match value {
+            Rboolean::FALSE => false,
+            Rboolean::TRUE => true,
+        }
+    }
+}
+
+impl From<bool> for Rboolean {
+    fn from(value: bool) -> Self {
+        match value {
+            true => Rboolean::TRUE,
+            false => Rboolean::FALSE,
+        }
+    }
+}
+
 #[non_exhaustive]
 #[repr(transparent)]
 #[derive(Debug)]
