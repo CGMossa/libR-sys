@@ -16,7 +16,7 @@ typedef ptrdiff_t R_xlen_t_rust;
 // `!`. However, for some reason, bindgen doesn't handle other no-return
 // attributes like `_Noreturn` (for C11) and `[[noreturn]]` (for C++ and C23),
 // so we define it here.
-#define NORET __attribute__((__noreturn__))
+// #define NORET __attribute__((__noreturn__))
 
 // Currently, I'm adding these on as-needed basis
 // but we may simply throw the whole lot in in the future.
