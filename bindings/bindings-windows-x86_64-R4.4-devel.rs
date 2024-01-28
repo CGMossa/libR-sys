@@ -501,6 +501,7 @@ pub type pGEcontext = *mut R_GE_gcontext;
 pub type DevDesc = _DevDesc;
 pub type pDevDesc = *mut DevDesc;
 #[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct _DevDesc {
     #[doc = "left raster coordinate"]
     pub left: f64,
@@ -799,6 +800,7 @@ pub struct GESystemDesc {
     pub callback: GEcallback,
 }
 #[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct _GEDevDesc {
     #[doc = "Stuff that the devices can see (and modify).\n All detailed in GraphicsDevice.h"]
     pub dev: pDevDesc,
