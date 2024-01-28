@@ -92,6 +92,15 @@ impl From<bool> for Rboolean {
     }
 }
 
+// Custom bindings
+
+extern "C" {
+    // Instead of
+    // pub fn TYPEOF(x: SEXP) -> ::std::os::raw::c_int;
+    pub fn TYPEOF(x: SEXP) -> u32;
+}
+
+
 #[non_exhaustive]
 #[repr(transparent)]
 #[derive(Debug)]
