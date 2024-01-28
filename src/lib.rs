@@ -67,7 +67,7 @@
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 #[repr(C)]
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Rboolean {
     FALSE = 0,
     // Values from the C-API greater than 0 are interpreted as `TRUE`

@@ -641,6 +641,19 @@ impl bindgen::callbacks::ParseCallbacks for TrimCommentsCallbacks {
 
         Some(comment)
     }
+    fn blocklisted_type_implements_trait(
+        &self,
+        name: &str,
+        derive_trait: bindgen::callbacks::DeriveTrait,
+    ) -> Option<bindgen::callbacks::ImplementsTrait> {
+        use bindgen::callbacks::DeriveTrait;
+        use bindgen::callbacks::ImplementsTrait;
+        match (name, derive_trait) {
+            ("Rboolean", DeriveTrait::Copy) => Some(ImplementsTrait::Yes),
+            ("Rboolean", DeriveTrait::Debug) => Some(ImplementsTrait::Yes),
+            _ => None,
+        }
+    }
 }
 
 fn main() {
