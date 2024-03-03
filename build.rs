@@ -531,9 +531,12 @@ fn generate_bindings(r_paths: &InstallationPaths, version_info: &RVersionInfo) {
 
     // Map FALSE ~ 0 and TRUE ~ 0 < value
     let bindgen_builder = bindgen_builder.blocklist_item("Rboolean");
-    
+
     // Custom binding returns the right type back
-    let bindgen_builder = bindgen_builder.blocklist_function("TYPEOF");
+    let bindgen_builder = bindgen_builder
+        .blocklist_function("TYPEOF")
+        .blocklist_function("Rf_ncols")
+        .blocklist_function("Rf_nrows");
 
     // Ensure that `SEXPREC` is opaque to Rust
     let bindgen_builder = bindgen_builder.blocklist_item("SEXPREC");

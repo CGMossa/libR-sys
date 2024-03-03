@@ -98,6 +98,10 @@ extern "C" {
     // Instead of
     // pub fn TYPEOF(x: SEXP) -> ::std::os::raw::c_int;
     pub fn TYPEOF(x: SEXP) -> u32;
+
+    // Instead of returning ::std::os::raw::c_int
+    pub fn Rf_ncols(arg1: SEXP) -> usize;
+    pub fn Rf_nrows(arg1: SEXP) -> usize;
 }
 
 
