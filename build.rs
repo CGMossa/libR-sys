@@ -493,8 +493,7 @@ fn generate_bindings(r_paths: &InstallationPaths, version_info: &RVersionInfo) {
 
     // This helps with no-return attributes.
     bindgen_builder = bindgen_builder
-        .clang_arg("-std=c++11")
-        .clang_arg("-xc++")
+        .clang_arg("-std=c17")
         .enable_function_attribute_detection();
 
     // stops warning about ignored attributes,
