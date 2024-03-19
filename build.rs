@@ -491,8 +491,11 @@ fn generate_bindings(r_paths: &InstallationPaths, version_info: &RVersionInfo) {
         format!("--target={target}"),
     ]);
 
-    // Supposedly, this helps with no-return attributes.
-    bindgen_builder = bindgen_builder.enable_function_attribute_detection();
+    // This helps with no-return attributes.
+    bindgen_builder = bindgen_builder
+        .clang_arg("-std=c++11")
+        .clang_arg("-xc++")
+        .enable_function_attribute_detection();
 
     // stops warning about ignored attributes,
     // e.g. ignores `__format__` attributes caused by `stdio.h`

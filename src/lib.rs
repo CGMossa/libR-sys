@@ -104,7 +104,6 @@ extern "C" {
     pub fn Rf_nrows(arg1: SEXP) -> usize;
 }
 
-
 #[non_exhaustive]
 #[repr(transparent)]
 #[derive(Debug)]
