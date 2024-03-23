@@ -138,7 +138,9 @@ jobs:
           echo "$(Rscript.exe -e 'cat(normalizePath(R.home()))')\bin\x64"  | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append ;
 
           # Add Rtools' GCC to PATH
-          if ($env:RTOOLS_VERSION -eq '43') {
+          if ($env:RTOOLS_VERSION -eq '44') {
+            $mingw_root = "C:\rtools44\x86_64-w64-mingw32.static.posix"
+          } elseif ($env:RTOOLS_VERSION -eq '43') {
             $mingw_root = "C:\rtools43\x86_64-w64-mingw32.static.posix"
           } elseif ($env:RTOOLS_VERSION -eq '42') {
             $mingw_root = "C:\rtools42\x86_64-w64-mingw32.static.posix"
