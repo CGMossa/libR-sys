@@ -167,8 +167,8 @@ pub const R_MINOR: &[u8; 4] = b"5.0\0";
 pub const R_STATUS: &[u8; 29] = b"Under development (unstable)\0";
 pub const R_YEAR: &[u8; 5] = b"2024\0";
 pub const R_MONTH: &[u8; 3] = b"04\0";
-pub const R_DAY: &[u8; 3] = b"18\0";
-pub const R_SVN_REVISION: u32 = 86444;
+pub const R_DAY: &[u8; 3] = b"20\0";
+pub const R_SVN_REVISION: u32 = 86457;
 pub const R_GE_definitions: u32 = 13;
 pub const R_GE_deviceClip: u32 = 14;
 pub const R_GE_group: u32 = 15;
@@ -1196,13 +1196,7 @@ extern "C" {
     );
     #[doc = "../../main/util.c  and others :"]
     pub fn R_ExpandFileName(arg1: *const ::std::os::raw::c_char) -> *const ::std::os::raw::c_char;
-    #[doc = "this group is not API"]
-    pub fn Rf_setIVector(
-        arg1: *mut ::std::os::raw::c_int,
-        arg2: ::std::os::raw::c_int,
-        arg3: ::std::os::raw::c_int,
-    );
-    pub fn Rf_setRVector(arg1: *mut f64, arg2: ::std::os::raw::c_int, arg3: f64);
+    #[doc = "this group is not API\n*\nattribute_hidden and no longer used.\nvoid\tsetIVector(int*, int, int);\nvoid\tsetRVector(double*, int, double);\n*/"]
     pub fn Rf_StringFalse(arg1: *const ::std::os::raw::c_char) -> Rboolean;
     pub fn Rf_StringTrue(arg1: *const ::std::os::raw::c_char) -> Rboolean;
     pub fn Rf_isBlankString(arg1: *const ::std::os::raw::c_char) -> Rboolean;
@@ -1243,16 +1237,6 @@ extern "C" {
         ilo: ::std::os::raw::c_int,
         mflag: *mut ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
-    #[doc = "not API"]
-    pub fn find_interv_vec(
-        xt: *mut f64,
-        n: *mut ::std::os::raw::c_int,
-        x: *mut f64,
-        nx: *mut ::std::os::raw::c_int,
-        rightmost_closed: *mut ::std::os::raw::c_int,
-        all_inside: *mut ::std::os::raw::c_int,
-        indx: *mut ::std::os::raw::c_int,
-    );
     #[doc = "../../appl/maxcol.c: also in Applic.h"]
     pub fn R_max_col(
         matrix: *mut f64,
