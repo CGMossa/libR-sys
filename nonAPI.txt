@@ -9,7 +9,6 @@ HASHTAB
 INTERNAL
 IS_ASCII
 IS_GROWABLE
-IS_SCALAR
 IS_UTF8
 LEVELS
 NAMED
@@ -121,6 +120,7 @@ R_set_prim_method
 R_set_quick_method_check
 R_set_standardGeneric_ptr
 R_setupHistory
+R_shallow_duplicate_attr
 R_strtod4
 R_subassign3_dflt
 R_taskCallbackRoutine
@@ -146,8 +146,6 @@ Rf_NonNullStringMatch
 Rf_PrintDefaults
 Rf_ReplIteration
 Rf_Seql
-Rf_StringFalse
-Rf_StringTrue
 Rf_addTaskCallback
 Rf_begincontext
 Rf_callToplevelHandlers
@@ -165,11 +163,13 @@ Rf_formatComplex
 Rf_formatInteger
 Rf_formatLogical
 Rf_formatReal
+Rf_gsetVar
 Rf_initEmbeddedR
 Rf_init_con
 Rf_initialize_R
-Rf_isBlankString
 Rf_isProtected
+Rf_isValidString
+Rf_isValidStringF
 Rf_jump_to_toplevel
 Rf_mainloop
 Rf_mbrtowc
@@ -177,7 +177,6 @@ Rf_mkFalse
 Rf_printNamedVector
 Rf_printRealVector
 Rf_printVector
-Rf_psmatch
 Rf_removeTaskCallbackByIndex
 Rf_removeTaskCallbackByName
 Rf_setSVector
@@ -232,7 +231,6 @@ UNSET_S4_OBJECT
 VECTOR_PTR
 XLENGTH_EX
 XTRUELENGTH
-addInputHandler
 baseRegisterIndex
 call_R
 cg_
@@ -272,7 +270,6 @@ freeRUser
 free_R_HOME
 getConnection
 getDLLVersion
-getInputHandler
 getPRIMNAME
 getRUser
 getSelectedHandler
@@ -313,7 +310,6 @@ ptr_do_dataviewer
 ptr_do_selectlist
 pythag_
 readconsolecfg
-removeInputHandler
 rg_
 rs_
 run_Rmainloop
