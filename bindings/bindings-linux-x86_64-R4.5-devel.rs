@@ -135,9 +135,9 @@ pub const R_MAJOR: &[u8; 2] = b"4\0";
 pub const R_MINOR: &[u8; 4] = b"5.0\0";
 pub const R_STATUS: &[u8; 29] = b"Under development (unstable)\0";
 pub const R_YEAR: &[u8; 5] = b"2024\0";
-pub const R_MONTH: &[u8; 3] = b"06\0";
-pub const R_DAY: &[u8; 3] = b"22\0";
-pub const R_SVN_REVISION: u32 = 86814;
+pub const R_MONTH: &[u8; 3] = b"07\0";
+pub const R_DAY: &[u8; 3] = b"18\0";
+pub const R_SVN_REVISION: u32 = 86905;
 pub const R_GE_definitions: u32 = 13;
 pub const R_GE_deviceClip: u32 = 14;
 pub const R_GE_group: u32 = 15;
@@ -1382,6 +1382,8 @@ extern "C" {
     pub fn DUPLICATE_ATTRIB(to: SEXP, from: SEXP);
     pub fn SHALLOW_DUPLICATE_ATTRIB(to: SEXP, from: SEXP);
     pub fn MARK_NOT_MUTABLE(x: SEXP);
+    pub fn CLEAR_ATTRIB(x: SEXP);
+    pub fn ANY_ATTRIB(x: SEXP) -> ::std::os::raw::c_int;
     #[doc = "S4 object testing"]
     pub fn IS_S4_OBJECT(x: SEXP) -> ::std::os::raw::c_int;
     #[doc = "Vector Access Functions"]
