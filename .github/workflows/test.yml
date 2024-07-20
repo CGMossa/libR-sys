@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+      - full_bindings_rebase
   pull_request:
     branches:
       - main
       - master
+      - full_bindings_rebase
   issue_comment:
     types:
       - created
